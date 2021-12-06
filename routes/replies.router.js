@@ -9,34 +9,50 @@ const mongoClient = new MongoClient(connect);
 
 const router = new Router();
 
-router.get("/", auth, async (req, res) => {
+router.get("/:postId", auth, async (req, res) => {
+  const postId = req.params.postId;
+  console.log(postId);
   try {
     const connection = await mongoClient.connect();
-    const posts = await connection
+
+    const post = await connection
       .db("authentication")
       .collection("posts")
-      .find({})
+      .aggregate([
+        {
+          $match: { postId: postId },
+        },
+        {
+          $lookup: {
+            from: "replies",
+            localField: "postId",
+            foreignField: "postId",
+            as: "replies",
+          },
+        },
+      ])
       .toArray();
-    const user = await connection
-      .db("authentication")
-      .collection("users")
-      .findOne({ id: req.userId });
-    if (!user) {
-      res.send({ success: false, error: "user not found" });
+    if (!post[0]) {
+      res.send({ success: false, error: "post not found" });
       return;
     }
-    res.send(posts);
+    res.send(post[0]);
   } catch (e) {
     console.log(e);
     res.status(400).send({ success: false, error: "internal server error" });
     return;
   }
 });
-router.post("/", auth, async (req, res) => {
+router.post("/:postId", auth, async (req, res) => {
   const body = req.body;
+  const postId = req.params.postId;
   try {
     const connection = await mongoClient.connect();
     const id = shortuuid.generate();
+    const post = await connection
+      .db("authentication")
+      .collection("posts")
+      .findOne({ postId: postId });
     const user = await connection
       .db("authentication")
       .collection("users")
@@ -46,20 +62,24 @@ router.post("/", auth, async (req, res) => {
       res.send({ success: false, error: "user not found" });
       return;
     }
-    if (body.Title && body.postBody) {
-      const posts = await connection
+    if (!post) {
+      res.send({ success: false, error: "post not found" });
+      return;
+    }
+    if (body.message.length) {
+      const reply = await connection
         .db("authentication")
-        .collection("posts")
+        .collection("replies")
         .insertOne({
-          title: body.Title,
-          message: body.postBody,
+          message: body.message,
           userId: req.userId,
           userName: req.name,
-          postId: id,
+          postId: postId,
+          replyId: id,
         });
-      res.send(posts);
+      res.send(reply);
     } else {
-      res.send({ error: "post didn't upload" });
+      res.send({ error: "reply didn't upload" });
     }
   } catch (e) {
     console.log(e);
@@ -79,6 +99,7 @@ router.put("/", auth, async (req, res) => {
   }
   try {
     const connection = await mongoClient.connect();
+    const id = shortuuid.generate();
     const user = await connection
       .db("authentication")
       .collection("users")

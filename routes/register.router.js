@@ -47,9 +47,10 @@ router.post("/", async (req, res) => {
   }
   const passwordHash = bcrypt.hashSync(body.password, 10);
   try {
+    const emailLc = body.email.toLowerCase();
     await connection.db("authentication").collection("users").insertOne({
       name: body.name,
-      email: body.email,
+      email: emailLc,
       password: passwordHash,
       id: id,
     });

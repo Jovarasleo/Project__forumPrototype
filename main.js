@@ -6,6 +6,7 @@ import loginRouter from "./routes/login.router.js";
 import postsRouter from "./routes/posts.router.js";
 import registerRouter from "./routes/register.router.js";
 import userInfo from "./routes/userInfo.router.js";
+import repliesRouter from "./routes/replies.router.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 
 app.use("/login", loginRouter);
 app.use("/posts", postsRouter);
+app.use("/post", repliesRouter);
 app.use("/register", registerRouter);
 app.use("/userInfo", userInfo);
 app.use("*", (req, res) => {

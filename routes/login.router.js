@@ -15,14 +15,14 @@ router.post("/", async (req, res) => {
     const user = await connection
       .db("authentication")
       .collection("users")
-      .findOne({ email: body.email });
+      .findOne({ email: body.email.toLowerCase() });
     if (!user) {
       res.send({ success: false, error: "User not found" });
       return;
     }
     const doPasswordMatch = bcrypt.compareSync(body.password, user.password);
     if (doPasswordMatch) {
-      const getToken = jwt.sign({ userId: user.id }, myToken, {
+      const getToken = jwt.sign({ userId: user.id, name: user.name }, myToken, {
         expiresIn: 2000,
       });
 

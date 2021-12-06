@@ -1,0 +1,87 @@
+body {
+  position: relative;
+  height: 100vh;
+}
+.userWrapper {
+  margin-top: 20px;
+  display: flex;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.userInfoWrapper {
+  display: flex;
+  margin-right: 0;
+  margin-left: auto;
+  min-width: 140px;
+  justify-content: space-between;
+}
+.userInfoWrapper h4 {
+  font-weight: 400;
+  text-transform: capitalize;
+}
+.userInfoWrapper button {
+  order: 1;
+  margin-left: 10px;
+}
+.logout {
+  background-color: rgb(240, 240, 240);
+  padding: 5px 15px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0px 0px 3px 1px rgba(110, 110, 110, 0.692);
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 600;
+}
+.logout:hover {
+  background-color: white;
+  box-shadow: 0px 0px 3px 1px rgba(124, 153, 185, 0.89);
+}
+.logout:active {
+  box-shadow: 0px 0px 3px 2px rgb(92, 186, 209);
+}
+.postsWrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.allPosts div {
+  border: 1px solid black;
+}
+.newPost {
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  display: flex;
+  justify-content: end;
+}
+.addNewPost {
+  background-color: rgb(240, 240, 240);
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0px 0px 3px 1px rgba(110, 110, 110, 0.692);
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 600;
+}
+.addNewPost:hover {
+  background-color: white;
+  box-shadow: 0px 0px 3px 1px rgba(124, 153, 185, 0.89);
+}
+.addNewPost:active {
+  box-shadow: 0px 0px 3px 2px rgb(92, 186, 209);
+}
+.formWrapper {
+  border-radius: 10px;
+  height: 600px;
+  width: 400px;
+  background-color: rgba(124, 153, 185, 0.733);
+  position: absolute;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

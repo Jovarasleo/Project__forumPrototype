@@ -17,8 +17,9 @@ export const auth = (req, res, next) => {
     if (isTokenValid) {
       const tokenData = jwt.decode(token);
       const tokenUserId = tokenData.userId;
+      const tokenUserName = tokenData.name;
       req.userId = tokenUserId;
-      console.log(`token: ${tokenData}`);
+      req.name = tokenUserName;
       next();
       return;
     }

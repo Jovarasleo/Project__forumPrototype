@@ -1,5 +1,9 @@
 const regBtn = document.querySelector(".regBtn");
 const formElement = document.querySelector("form");
+const toMainPage = document.querySelector("nav h1");
+toMainPage.addEventListener("click", () => {
+  window.location.href = "/frontend/index.html";
+});
 regBtn.addEventListener("click", async (event) => {
   event.preventDefault();
   register();

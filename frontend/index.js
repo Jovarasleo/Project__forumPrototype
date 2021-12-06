@@ -1,62 +1,70 @@
+import postFormRender from "./postForm.js";
+
 const logoutButton = document.querySelector(".logout");
-const submitButton = document.querySelector(".send");
-const formElement = document.querySelector("form");
 const allPosts = document.querySelector(".allPosts");
-const isUserLoggedIn = () => {
+const newPost = document.querySelector(".addNewPost");
+const formSelector = document.querySelector(".makePost");
+
+newPost.addEventListener("click", () => {
+  if (!formSelector.children.length) {
+    formSelector.innerHTML = null;
+    postFormRender();
+  } else {
+    formSelector.innerHTML = null;
+  }
+});
+function isUserLoggedIn() {
   const token = localStorage.getItem("token");
   return Boolean(token);
-};
+}
 
-const getUserInfo = async () => {
+async function getUserInfo() {
   const token = localStorage.getItem("token");
-
   const response = await fetch("http://localhost:3000/userInfo", {
     headers: {
       authorization: `Bearer ${token}`,
     },
   });
-
   const status = response.status;
   const responseJSON = await response.json();
-
   if (status === 401) {
     return;
   } else {
     return responseJSON;
   }
-};
+}
 
-const getAndDisplayUserInfo = async () => {
+async function getAndDisplayUserInfo() {
   const userInfo = await getUserInfo();
   if (userInfo) {
     displayUserInfo(userInfo);
   } else {
     logout();
   }
-};
+}
 
-const displayUserInfo = (userInfo) => {
+function displayUserInfo(userInfo) {
   const wrapperElement = document.querySelector(".userInfoWrapper");
-  const emailElement = document.createElement("h3");
-  emailElement.innerText = "User: " + userInfo.name;
+  const emailElement = document.createElement("h4");
+  emailElement.innerText = userInfo.name;
   wrapperElement.append(emailElement);
-};
+}
 
-const init = async () => {
+async function init() {
   // ar useris prisijunges
   if (isUserLoggedIn()) {
     await getAndDisplayUserInfo();
+    await displayUserPosts();
     logoutButton.addEventListener("click", logout);
   } else {
     location.replace("./login.html");
   }
-};
+}
 
-const logout = () => {
+function logout() {
   localStorage.removeItem("token");
   location.replace("./login.html");
-};
-init();
+}
 
 async function getUsersPosts() {
   const token = localStorage.getItem("token");
@@ -75,6 +83,7 @@ async function getUsersPosts() {
   }
 }
 async function displayUserPosts() {
+  console.log("yo");
   allPosts.innerHTML = null;
   const userInfo = await getUserInfo();
   const userPosts = await getUsersPosts();
@@ -131,14 +140,15 @@ async function displayUserPosts() {
 }
 
 async function submitButtonHandler() {
+  const formElement = document.querySelector("form");
   const formData = new FormData(formElement);
   const Title = formData.get("Title");
   const postBody = formData.get("postBody");
-
   const post = await postMessage(Title, postBody);
 
   if (post) {
     console.log("huray");
+    displayUserPosts();
   } else {
     console.log("ohNoes");
   }
@@ -155,9 +165,5 @@ async function postMessage(Title, postBody) {
   });
   return await response.json();
 }
-submitButton.addEventListener("click", async (event) => {
-  event.preventDefault();
-  await submitButtonHandler();
-  await displayUserPosts();
-});
-displayUserPosts();
+init();
+export { submitButtonHandler as default };

@@ -1,6 +1,10 @@
 const formElement = document.querySelector("form");
 const submitButton = document.querySelector(".login");
 const registerBtn = document.querySelector(".toRegister");
+const toMainPage = document.querySelector("nav h1");
+toMainPage.addEventListener("click", () => {
+  window.location.href = "/frontend/index.html";
+});
 registerBtn.addEventListener("click", () => {
   window.location.href = "/frontend/register.html";
 });

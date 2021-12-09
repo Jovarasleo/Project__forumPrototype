@@ -89,11 +89,14 @@ async function displayUserPosts() {
   const userPosts = await getUsersPosts();
   userPosts.forEach((post) => {
     let postWrapper = document.createElement("div");
+    let postlinkWrapper = document.createElement("a");
     let postTitle = document.createElement("h2");
     let postBody = document.createElement("p");
     postTitle.textContent = post.title;
     postBody.textContent = post.message;
-    postWrapper.append(postTitle, postBody);
+    postlinkWrapper.href = "/frontend/post.html?" + post.postId;
+    postlinkWrapper.append(postTitle, postBody);
+    postWrapper.append(postlinkWrapper);
     if (userInfo.id === post.userId) {
       const editBtn = document.createElement("button");
       editBtn.textContent = "edit post";

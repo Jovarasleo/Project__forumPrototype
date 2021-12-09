@@ -1,0 +1,6 @@
+{
+  "emmet.optimizeStylesheetParsing": false,
+  "emmet.includeLanguages": {
+    "javascript": "html"
+  }
+}

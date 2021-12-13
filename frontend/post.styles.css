@@ -1,0 +1,9 @@
+.postWrapper{
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 50px;
+    border: 1px solid black;
+}
+.reply-btn{
+    padding: 3px 15px;
+}

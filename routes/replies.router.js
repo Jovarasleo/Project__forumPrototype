@@ -66,7 +66,7 @@ router.post("/:postId", auth, async (req, res) => {
       res.send({ success: false, error: "post not found" });
       return;
     }
-    if (body.message.length) {
+    if (body.message.length > 0) {
       const reply = await connection
         .db("authentication")
         .collection("replies")

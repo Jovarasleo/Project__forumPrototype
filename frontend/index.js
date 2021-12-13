@@ -1,5 +1,5 @@
 import postFormRender from "./postForm.js";
-
+import getAndDisplayUserInfo from "./helpers/user.js"
 const logoutButton = document.querySelector(".logout");
 const allPosts = document.querySelector(".allPosts");
 const newPost = document.querySelector(".addNewPost");
@@ -28,27 +28,12 @@ async function getUserInfo() {
   const status = response.status;
   const responseJSON = await response.json();
   if (status === 401) {
-    return;
+    return logout();
   } else {
     return responseJSON;
   }
 }
 
-async function getAndDisplayUserInfo() {
-  const userInfo = await getUserInfo();
-  if (userInfo) {
-    displayUserInfo(userInfo);
-  } else {
-    logout();
-  }
-}
-
-function displayUserInfo(userInfo) {
-  const wrapperElement = document.querySelector(".userInfoWrapper");
-  const emailElement = document.createElement("h4");
-  emailElement.innerText = userInfo.name;
-  wrapperElement.append(emailElement);
-}
 
 async function init() {
   // ar useris prisijunges
@@ -57,6 +42,7 @@ async function init() {
     await displayUserPosts();
     logoutButton.addEventListener("click", logout);
   } else {
+    window.onbeforeunload = null
     location.replace("./login.html");
   }
 }
@@ -77,7 +63,7 @@ async function getUsersPosts() {
   const status = response.status;
   const responseJSON = await response.json();
   if (status === 401) {
-    return;
+    return logout();
   } else {
     return responseJSON;
   }
